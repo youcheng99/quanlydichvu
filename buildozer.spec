@@ -21,4 +21,4 @@ minapi = 21
 ndk = 25b
 archs = arm64-v8a
 permissions = WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE
-accept_sdk_license = True
+android.accept_sdk_license = True
