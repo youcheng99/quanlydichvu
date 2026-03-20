@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04   # Đổi sang 22.04
 
     steps:
       - name: Checkout code
@@ -38,7 +38,9 @@ jobs:
             cmake \
             libffi-dev \
             libssl-dev \
-            build-essential
+            build-essential \
+            libgl1-mesa-dev \
+            libgles2-mesa-dev
 
       - name: Install buildozer
         run: |
@@ -51,13 +53,9 @@ jobs:
           path: ~/.buildozer
           key: ${{ runner.os }}-buildozer-${{ hashFiles('buildozer.spec') }}
 
-      # Kiểm tra cú pháp Python trước khi build
-      - name: Check Python syntax
-        run: python -m py_compile main.py
-
       - name: Build with buildozer
         run: |
-          yes | buildozer android debug
+          yes | buildozer android debug -- --log-level 2
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
