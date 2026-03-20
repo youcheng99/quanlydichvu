@@ -35,10 +35,10 @@ jobs:
             zlib1g-dev \
             libncurses5-dev \
             libncursesw5-dev \
-            libtinfo5 \
             cmake \
             libffi-dev \
-            libssl-dev
+            libssl-dev \
+            build-essential
 
       - name: Install buildozer
         run: |
@@ -51,9 +51,13 @@ jobs:
           path: ~/.buildozer
           key: ${{ runner.os }}-buildozer-${{ hashFiles('buildozer.spec') }}
 
+      # Kiểm tra cú pháp Python trước khi build
+      - name: Check Python syntax
+        run: python -m py_compile main.py
+
       - name: Build with buildozer
         run: |
-          buildozer android debug
+          yes | buildozer android debug
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
