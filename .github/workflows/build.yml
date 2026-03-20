@@ -1,12 +1,11 @@
 name: Build Android APK
 
-# Kích hoạt khi push lên nhánh main, tạo pull request, hoặc chạy thủ công
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  workflow_dispatch:   # Cho phép bấm nút chạy thủ công trên GitHub
+  workflow_dispatch:
 
 jobs:
   build:
@@ -14,10 +13,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.8'
 
@@ -46,9 +45,8 @@ jobs:
           pip install --user buildozer cython
           echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-      # Tùy chọn: cache thư mục .buildozer để tăng tốc các lần build sau
       - name: Cache buildozer directory
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.buildozer
           key: ${{ runner.os }}-buildozer-${{ hashFiles('buildozer.spec') }}
@@ -57,8 +55,8 @@ jobs:
         run: |
           buildozer android debug
 
-     - name: Upload APK artifact
-       uses: actions/upload-artifact@v4
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
         with:
           name: app-debug
           path: bin/*.apk
